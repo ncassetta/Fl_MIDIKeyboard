@@ -1,0 +1,43 @@
+/**
+\mainpage 
+The Fl_MIDIKeyboard is a widget developed with FLTK GUI Toolkit (see <http://www.fltk.org>) by __Nicola Cassetta__.
+It allows the user to incorporate into FLTK environment a piano keyboard capable to send MIDI messages to the instruments
+installed into the computer.
+It includes these features:
+- Horizontal or vertical keyboard
+- Customizable range
+- Variable ratio between white/black keys height and width
+- Resizing and autoresizing of keys
+- Scrolling with a scrollbar, or with the arrow keys on the computer keyboard (with the mouse, not yet implemented)
+- Playing with a mouse click on the keys or with the computer keyboard (this mode allows playing chords)
+- Callbacks can be done when a key is pressed or released
+- Can send these MIDI messages: Note On/Off, Program change, Volume, Pan
+
+\note Currently MIDI playback is implemented only for WINDOWS, I hope someone could help me to develop MIDI for Linux.
+
+See the file test_FlMIDIKeyboard.cpp for an example.
+Thanks
+Nicola Cassetta 
+**/
+
+/** \page playing PLAYING WITH COMPUTER KEYBOARD.
+When the press mode is MKB_PRESS_KEYS or MKB_PRESS_BOTH you can play the Fl_MIDIKeyboard with the computer keyboard.
+This allows you to play chords (in the range of one octave).
+Keys are ordered as follows:
+- 'z' = C (default: middle C)
+- 's' = C#
+- 'x' = D
+- 'd' = D#
+- 'c' = E
+- 'v' = F
+- 'g' = F#
+- 'b' = G
+- 'h' = G#
+- 'n' = A
+- 'j' = A#
+- 'm' = B
+- ',' = C (upper octave)
+- up arrow raise (and scroll) one octave
+- down arrow lower (and scroll) one octave
+\note The widget uses the FLTK events handling for playing, so it is not intended for realtime performance! 
+**/
