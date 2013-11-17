@@ -72,7 +72,8 @@ Fl_MIDIKeyboard::Fl_MIDIKeyboard (int X, int Y, int W, int H, const char *l) :
     _autoresized(false),
     _kw_resize_min(DEFAULT_KW_RESIZE_MIN),
     _kw_resize_max(DEFAULT_KW_RESIZE_MAX),
-    _base_keyinput(MIDDLE_C) {
+    _base_keyinput(MIDDLE_C),
+    _autodrag(false) {
 
     box(FL_DOWN_FRAME);
     _type = (W >= H) ? MKB_HORIZONTAL : MKB_VERTICAL;   // set horizontal/vertical
@@ -427,11 +428,11 @@ void Fl_MIDIKeyboard::set_keyboard_width(void) {
 
 void Fl_MIDIKeyboard::set_key_height() {
     if (_type == MKB_HORIZONTAL) {
-        keyboard->size(keyboard->w(), kbdh() - hscrollbar.h() * hscrollbar.visible() - 1);
+        keyboard->size(keyboard->w(), kbdh() - 1);
         _key_height = keyboard->h();
     }
     else {
-        keyboard->size(kbdh() - scrollbar.w() * scrollbar.visible() - 1, keyboard->h());
+        keyboard->size(kbdh() - 1, keyboard->h());
         _key_height = keyboard->w();
     }
      _b_height = (int)(_key_height * _bw_height_ratio);
@@ -554,15 +555,13 @@ int Fl_MIDIKeyboard::handle(int e) {
     switch(e) {
         case FL_PUSH :
             take_focus();
-            if (Fl::event_button1() && (_pressmode & MKB_PRESS_MOUSE)) {
+            if (Fl::event_button1() && (_pressmode & MKB_PRESS_MOUSE))
                 press_key(_below_mouse);        // press the key below mouse
-                return 1;
-            }
+            return 1;
         case FL_DRAG :
             if (!Fl::event_inside(this) || Fl::event_inside(&hscrollbar) || Fl::event_inside(&scrollbar)){
                 release_key(_below_mouse);      // if the mouse leaved the keyboard, release the key
                 _below_mouse = -1;
-                Fl::pushed(0);
             }
             else {
                 short new_below_mouse = find_key(Fl::event_x(), Fl::event_y());
@@ -574,9 +573,23 @@ int Fl_MIDIKeyboard::handle(int e) {
                     _below_mouse = new_below_mouse;
                 }
             }
-            return 1;
+            if( (_scrollmode & MKB_SCROLL_MOUSE) &&     // scrolling with mouse
+                !_autodrag &&
+                ( ( _type == MKB_HORIZONTAL && ( Fl::event_inside(x()-20, y(), x(), y()+h()) ||
+                                                 Fl::event_inside(x()+w(), y(), x()+w()+20, y()+h()))) ||
+                  ( _type == MKB_VERTICAL   && ( Fl::event_inside(x(), y()-20, x()+w(), y()) ||
+                                                 Fl::event_inside(x(), y()+h(), x()+w(), y()+h()+20))))
+              ) {
+                _autodrag = true;
+                Fl::add_timeout(0.3, autodrag_to, this);
+            }
+            return 1;   // idem
         case FL_RELEASE :
             release_key(_below_mouse);
+            if (_autodrag) {
+                Fl::remove_timeout(autodrag_to, this);
+                _autodrag = false;
+            }
             return 1;
         case FL_ENTER :
             return 1;
@@ -608,9 +621,13 @@ int Fl_MIDIKeyboard::handle(int e) {
                 switch(Fl::event_key()) {
                     case FL_Left :
                         key_position(is_black(_bottomkey-1) ? _bottomkey-2 : _bottomkey-1);
+                        if (_below_mouse != -1)     // if mouse is inside the keyboard, recalculate _below_mouse key
+                            _below_mouse = find_key(Fl::event_x(), Fl::event_y());
                         return 1;
                     case FL_Right :
                         key_position(is_black(_bottomkey+1) ? _bottomkey+2 : (is_black(_bottomkey+2) ? _bottomkey+3 : _bottomkey+2));
+                        if (_below_mouse != -1)    // if mouse is inside the keyboard, recalculate _below_mouse key
+                            _below_mouse = find_key(Fl::event_x(), Fl::event_y());
                         return 1;
                     default :
                         break;
@@ -761,3 +778,32 @@ void Fl_MIDIKeyboard::draw(void) {                          // fltk draw() overr
     fl_pop_clip();
 }
 
+
+void Fl_MIDIKeyboard::autodrag_to(void *p) {
+
+    Fl_MIDIKeyboard* mk = (Fl_MIDIKeyboard *)p;
+    int oldx = mk->xposition();
+    int oldy = mk->yposition();
+    if (mk->_type == MKB_HORIZONTAL) {
+        if (Fl::event_inside(mk->x()-20, mk->y(), mk->x(), mk->y()+mk->h()) &&
+            mk->xposition() >= 10) {
+            mk->position(mk->xposition() - 10, mk->yposition());
+        }
+        else if (Fl::event_inside(mk->x()+mk->w(), mk->y(), mk->x()+mk->w()+20, mk->y()+mk->h()) &&
+                 mk->xposition() <= mk->keyboard->w() - mk->w() - 10) {
+            mk->position(mk->xposition() + 10, mk->yposition());
+        }
+    }
+
+    else if (mk->_type == MKB_VERTICAL) {
+        if (Fl::event_inside(mk->x(), mk->y()-20, mk->x()+mk->w(), mk->y()))
+            mk->position(mk->xposition(), mk->yposition() >= 10 ? mk->yposition() - 10 : 0);
+        else if (Fl::event_inside(mk->x(), mk->y()+mk->h(), mk->x()+mk->w(), mk->y()+mk->h()+20))
+            mk->position(mk->xposition(), mk->yposition() <= mk->keyboard->h() - mk->h() - 10 ?
+                                                mk->yposition() + 10 : mk->keyboard->h() - mk->h() + Fl::box_dh(mk->box()));
+    }
+    if (mk->xposition() != oldx || mk->yposition() != oldy)
+        mk->visible_keys();
+
+    Fl::add_timeout(0.05, autodrag_to, p);
+}

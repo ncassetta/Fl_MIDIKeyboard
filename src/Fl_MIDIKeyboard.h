@@ -68,8 +68,10 @@ class Fl_MIDIKeyboard : public Fl_Scroll
 
         /// Scrolling modes.
         enum {  MKB_SCROLL_NONE = 0,        ///< no scrolling
-                MKB_SCROLL_MOUSE = 1,       ///< hides the scrollbar and scroll with the mouse (not yet implemented)
-                MKB_SCROLL_KEYS = 2,        ///< hides the scrollbar and scroll by the left/right keys in the computer keyboard
+                MKB_SCROLL_MOUSE = 1,       ///< hides the scrollbar and scroll with the mouse. Drag the mouse immediately
+                                            ///< over, under, left or right to get scrolling
+                MKB_SCROLL_KEYS = 2,        ///< hides the scrollbar and scroll by the left/right arrow keys
+                                            ///<in the computer keyboard
                 MKB_SCROLL_SCRBAR = 4       ///< makes the scrollbar visible and scroll with it
              };
 
@@ -103,11 +105,11 @@ class Fl_MIDIKeyboard : public Fl_Scroll
 
         int    _type;                       // horizontal/vertical keyboard
 
-        /*uchar*/int       _firstkey;       // keyboard's first/last MIDI key
-        /*uchar*/int       _lastkey;
-        /*uchar*/int       _bottomkey;      // first/last visible key
-        /*uchar*/int       _topkey;
-        /*uchar*/int       _maxbottom;      // max for bottom key
+        uchar        _firstkey;             // keyboard's first/last MIDI key
+        uchar       _lastkey;
+        uchar        _bottomkey;            // first/last visible key
+        uchar        _topkey;
+        uchar        _maxbottom;            // max for bottom key
         int         _white_keys;            // number of white keys
 
         int         _key_height;            // keys height
@@ -132,6 +134,7 @@ class Fl_MIDIKeyboard : public Fl_Scroll
         short       _callback_status;       // callback status
 
         bool        pressed_keys[128];      // pressed keys
+        bool        _autodrag;              // used for mouse scrolling
 
         uchar       _npressed;              // number of pressed keys
         uchar       _minpressed;            // minimum pressed key  (for speeding draw routine)
@@ -174,9 +177,9 @@ class Fl_MIDIKeyboard : public Fl_Scroll
                                      w() - Fl::box_dw(box()) - scrollbar.visible() * scrollbar.w() :
                                      h() - Fl::box_dh(box()) - hscrollbar.visible() * hscrollbar.h(); }
 
-        /// This function sets all private parameters for draw() method, assuming that the correct key widths
+        /// This function sets all internal parameters for draw() method, assuming that the correct key widths
         /// have been set.
-        /// If you implement your own routines you should call this every time the width of the keys or of
+        /// If you implement your own draw routines you should call this every time the width of the keys or of
         /// the keyboard changes (for example if black or white keys widths are resized, or if the range changes).
         /// Public functions already call it, so you do not have to worry if you use them.
         void        set_keyboard_width();   // set the width of the scrolling keyboard
@@ -209,7 +212,7 @@ class Fl_MIDIKeyboard : public Fl_Scroll
             return (note == 1 || note == 3 || note == 6 || note == 8 || note == 10); }
 
         /// Returns true if k is C or F.\ Used internally in draw() method.
-        static bool isCF(uchar note) {                  // true if note is C or F
+        static bool isCF(uchar note) {
             note %= 12;
             return (note == 0 || note == 5); }
 
@@ -218,6 +221,9 @@ class Fl_MIDIKeyboard : public Fl_Scroll
 
         /// The FLTK draw() method override.
         virtual void draw(void);
+
+        /// Used internally for mouse scrolling
+        static void autodrag_to( void* p);
 
     public:
 
@@ -283,14 +289,14 @@ class Fl_MIDIKeyboard : public Fl_Scroll
         float       bw_height_ratio() const
                         { return(_bw_height_ratio); }
 
-        /// Set the black/white key height ratio./ Value range is 0.2 <= r <= 0.8.
+        /// Sets the black/white key height ratio./ Value range is 0.2 <= r <= 0.8.
         void        bw_height_ratio(float r);
 
         /// Returns the black/white key width ratio.
         float       bw_width_ratio() const
                         { return(_bw_width_ratio); }
 
-        /// Set the black/white key width ratio./ Value range is 0.4 <= r <= 0.8.
+        /// Sets the black/white key width ratio./ Value range is 0.4 <= r <= 0.8.
         void        bw_width_ratio(float r);
 
         /// Returns the MIDI note number of the first (lower) key of the keyboard (60 = middle c).

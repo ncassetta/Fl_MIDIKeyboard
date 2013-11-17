@@ -245,7 +245,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:ad40f37691369777d19f89c338ed87963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ee7314d8677861a9a2973d132d6c4a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ee7314d8677861a9a2973d132d6c4a1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#a2ee7314d8677861a9a2973d132d6c4a1">bw_height_ratio</a> (float r)</td></tr>
-<tr class="memdesc:a2ee7314d8677861a9a2973d132d6c4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the black/white key height ratio./ Value range is 0.2 &lt;= r &lt;= 0.8. <br/></td></tr>
+<tr class="memdesc:a2ee7314d8677861a9a2973d132d6c4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the black/white key height ratio./ Value range is 0.2 &lt;= r &lt;= 0.8. <br/></td></tr>
 <tr class="separator:a2ee7314d8677861a9a2973d132d6c4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35b0c929d117a4c2cff9815dfafb7508"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35b0c929d117a4c2cff9815dfafb7508"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#a35b0c929d117a4c2cff9815dfafb7508">bw_width_ratio</a> () const </td></tr>
@@ -253,7 +253,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:a35b0c929d117a4c2cff9815dfafb7508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d333968a530e9849ee7494be05efeba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d333968a530e9849ee7494be05efeba"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#a3d333968a530e9849ee7494be05efeba">bw_width_ratio</a> (float r)</td></tr>
-<tr class="memdesc:a3d333968a530e9849ee7494be05efeba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the black/white key width ratio./ Value range is 0.4 &lt;= r &lt;= 0.8. <br/></td></tr>
+<tr class="memdesc:a3d333968a530e9849ee7494be05efeba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the black/white key width ratio./ Value range is 0.4 &lt;= r &lt;= 0.8. <br/></td></tr>
 <tr class="separator:a3d333968a530e9849ee7494be05efeba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff7b43d83a9f797ba6e1231968a383d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff7b43d83a9f797ba6e1231968a383d1"></a>
 uchar&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#aff7b43d83a9f797ba6e1231968a383d1">first_key</a> () const </td></tr>
@@ -499,6 +499,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#a3b5a9ca34b663b378dc86bc184ed9f29">isCF</a> (uchar note)</td></tr>
 <tr class="memdesc:a3b5a9ca34b663b378dc86bc184ed9f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if k is C or F. Used internally in <a class="el" href="class_fl___m_i_d_i_keyboard.html#adcd44a1f4b52f0915602bfaf1652ebc2" title="The FLTK draw() method override. ">draw()</a> method. <br/></td></tr>
 <tr class="separator:a3b5a9ca34b663b378dc86bc184ed9f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33c96ecf35f81ca3418d55da7c3a52a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33c96ecf35f81ca3418d55da7c3a52a9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fl___m_i_d_i_keyboard.html#a33c96ecf35f81ca3418d55da7c3a52a9">autodrag_to</a> (void *p)</td></tr>
+<tr class="memdesc:a33c96ecf35f81ca3418d55da7c3a52a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally for mouse scrolling. <br/></td></tr>
+<tr class="separator:a33c96ecf35f81ca3418d55da7c3a52a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -640,10 +644,10 @@ UCHAR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <p>no scrolling </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="afd02850a81ee7a997314bbbb6900d46fa1dff8b69b3f1ca3da4071eb0c500b52a"></a>MKB_SCROLL_MOUSE</em>&nbsp;</td><td class="fielddoc">
-<p>hides the scrollbar and scroll with the mouse (not yet implemented) </p>
+<p>hides the scrollbar and scroll with the mouse. Drag the mouse immediately over, under, left or right to get scrolling </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="afd02850a81ee7a997314bbbb6900d46fa14c7812723dce4cabf89893e2101b063"></a>MKB_SCROLL_KEYS</em>&nbsp;</td><td class="fielddoc">
-<p>hides the scrollbar and scroll by the left/right keys in the computer keyboard </p>
+<p>hides the scrollbar and scroll by the left/right arrow keys in the computer keyboard </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="afd02850a81ee7a997314bbbb6900d46faffceab488bc73aeeac6105f0ff9560aa"></a>MKB_SCROLL_SCRBAR</em>&nbsp;</td><td class="fielddoc">
 <p>makes the scrollbar visible and scroll with it </p>
@@ -1313,7 +1317,7 @@ UCHAR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function sets all private parameters for <a class="el" href="class_fl___m_i_d_i_keyboard.html#adcd44a1f4b52f0915602bfaf1652ebc2" title="The FLTK draw() method override. ">draw()</a> method, assuming that the correct key widths have been set. If you implement your own routines you should call this every time the width of the keys or of the keyboard changes (for example if black or white keys widths are resized, or if the range changes). Public functions already call it, so you do not have to worry if you use them. </p>
+<p>This function sets all internal parameters for <a class="el" href="class_fl___m_i_d_i_keyboard.html#adcd44a1f4b52f0915602bfaf1652ebc2" title="The FLTK draw() method override. ">draw()</a> method, assuming that the correct key widths have been set. If you implement your own draw routines you should call this every time the width of the keys or of the keyboard changes (for example if black or white keys widths are resized, or if the range changes). Public functions already call it, so you do not have to worry if you use them. </p>
 
 </div>
 </div>
@@ -1529,7 +1533,7 @@ UCHAR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 13 2013 21:32:47 for Fl_MIDIKeyboard by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Nov 17 2013 09:35:00 for Fl_MIDIKeyboard by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

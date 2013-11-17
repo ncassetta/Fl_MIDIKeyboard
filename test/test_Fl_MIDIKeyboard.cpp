@@ -6,7 +6,7 @@
 #include <Fl/Fl_Check_Button.H>
 #include <Fl/Fl_ask.H>
 
-#include "../Fl_MIDIKeyboard.h"
+#include "../src/Fl_MIDIKeyboard.h"
 
 #include <cstdio>
 
@@ -158,9 +158,8 @@ int main (int argc, char ** argv) {
     window = new Fl_Double_Window (800, 600);
     kb = new Fl_MIDIKeyboard (20, 20, 200, 380, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");
-    kb->color(FL_DARK_BLUE);
+    kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any background blue!
     kb->callback(kb_callback_cb);
-    kb->scroll_mode(Fl_MIDIKeyboard::MKB_SCROLL_SCRBAR | Fl_MIDIKeyboard::MKB_SCROLL_KEYS);
     kb->set_range(Fl_MIDIKeyboard::MKB_PIANO);
     kb->center_keyboard(MIDDLE_C);
 
