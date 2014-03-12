@@ -156,48 +156,41 @@ void setoutput_to(void*) {
 
 int main (int argc, char ** argv) {
     window = new Fl_Double_Window (800, 600);
-    kb = new Fl_MIDIKeyboard (20, 20, 200, 380, "MIDI Keyboard");
+    kb = new Fl_MIDIKeyboard (20, 20, 760, 160, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");
     kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any background blue!
     kb->callback(kb_callback_cb);
     kb->set_range(Fl_MIDIKeyboard::MKB_PIANO);
     kb->center_keyboard(MIDDLE_C);
 
-    group_settings = new Fl_Group (290, 20, 280, 310);
+    group_settings = new Fl_Group (20, 210, 300, 260);
     group_settings->box(FL_ENGRAVED_FRAME);
 
-    spinner_range1 = new Fl_Spinner(300 , 30 ,60, 20);
+    spinner_range1 = new Fl_Spinner(30 , 240 ,60, 20);
     spinner_range1->callback(setrange_cb);
     spinner_range1->range(0, 120);
     spinner_range1->value(kb->first_key());
-    spinner_range2 = new Fl_Spinner(370 , 30 ,60, 20, "Extension");
+    spinner_range2 = new Fl_Spinner(30 , 270 ,60, 20, "Extension");
     spinner_range2->align(FL_ALIGN_RIGHT);
     spinner_range2->callback(setrange_cb);
     spinner_range2->range(7, 127);
     spinner_range2->value(kb->last_key());
 
-    check_autoresize = new Fl_Check_Button(300, 60, 25, 25, "Autoresize");
+    check_autoresize = new Fl_Check_Button(30, 300, 25, 25, "Autoresize");
     check_autoresize->align(FL_ALIGN_RIGHT);
     check_autoresize->callback(autoresize_cb);
     check_autoresize->value(1);
     check_autoresize->do_callback();
 
-    spinner_bwh = new Fl_Spinner(300, 90, 60, 20, "B/W height ratio");
+    spinner_bwh = new Fl_Spinner(30, 330, 60, 20, "B/W height ratio");
     spinner_bwh->align(FL_ALIGN_RIGHT);
     spinner_bwh->callback(setbwhratio_cb);
     spinner_bwh->type(FL_FLOAT_INPUT);
     spinner_bwh->range(0.2, 0.8);
     spinner_bwh->step(0.05);
     spinner_bwh->value(kb->bw_height_ratio());
-    spinner_bww = new Fl_Spinner(300, 120, 60, 20, "B/W width ratio");
-    spinner_bww->align(FL_ALIGN_RIGHT);
-    spinner_bww->callback(setbwwratio_cb);
-    spinner_bww->type(FL_FLOAT_INPUT);
-    spinner_bww->range(0.4, 0.8);
-    spinner_bww->step(0.05);
-    spinner_bww->value(kb->bw_width_ratio());
 
-    choice_scroll = new Fl_Choice(300, 150, 150, 20, "Scroll mode");
+    choice_scroll = new Fl_Choice(30, 360, 150, 20, "Scroll mode");
     choice_scroll->align(FL_ALIGN_RIGHT);
     choice_scroll->callback(setscrolling_cb);
     choice_scroll->add ("No scrolling");
@@ -206,7 +199,8 @@ int main (int argc, char ** argv) {
     choice_scroll->add ("With scrollbar");
     choice_scroll->value(0);        // default value for scroll mode
     choice_scroll->do_callback();
-    choice_keypress = new Fl_Choice(300, 180, 150, 20, "Playing mode");
+
+    choice_keypress = new Fl_Choice(30, 390, 150, 20, "Playing mode");
     choice_keypress->align(FL_ALIGN_RIGHT);
     choice_keypress->callback(setkeypress_cb);
     choice_keypress->add ("No playing");
@@ -214,7 +208,8 @@ int main (int argc, char ** argv) {
     choice_keypress->add ("With computer keys");
     choice_keypress->add ("Both mouse and computer keys");
     choice_keypress->value(0);      // default value for keypress mode
-    choice_callback = new Fl_Choice(300, 210, 150, 20, "Callback mode");
+
+    choice_callback = new Fl_Choice(30, 420, 150, 20, "Callback mode");
     choice_callback->align(FL_ALIGN_RIGHT);
     choice_callback->callback(setcallback_cb);
     choice_callback->add ("No callback");
@@ -227,50 +222,52 @@ int main (int argc, char ** argv) {
 
     group_settings->end();
 
-    group_output = new Fl_Group (600, 20, 190, 540);
-    group_output->box(FL_ENGRAVED_FRAME);
-
-    out1 = new Fl_Output(710, 30, 60, 20, "First key :");
-    out2 = new Fl_Output(710, 60, 60, 20, "Last  key :");
-    out3 = new Fl_Output(710, 110, 60, 20, "Mouse  key :");
-    out4 = new Fl_Output(710, 160, 60, 20, "Mouse x :");
-    out5 = new Fl_Output(710, 190, 60, 20, "Mouse y :");
-    out6 = new Fl_Output(710, 240, 60, 20, "Pressed :");
-    out7 = new Fl_Output(610, 290, 160, 20);
-    out7->value("CALLBACK");
-    group_output->end();
-
-    group_midi = new Fl_Group(290, 360, 280, 200);
+    group_midi = new Fl_Group(360, 210, 300, 260);
     group_midi->box(FL_ENGRAVED_FRAME);
 
-    choice_port = new Fl_Choice(300, 380, 240, 20, "MIDI Port");
+    choice_port = new Fl_Choice(390, 240, 240, 20, "MIDI Port");
     choice_port->align(FL_ALIGN_TOP);
     for (int i = 0; i < kb->GetNumMIDIOutDevs(); i++)
         choice_port->add(kb->GetMIDIOutDevName(i));
     choice_port->value(0);
     choice_port->callback(setmidi_cb);
     choice_port->do_callback();
-    spinner_chan = new Fl_Spinner(390, 420, 60, 20, "MIDI Channel");
+    spinner_chan = new Fl_Spinner(540, 270, 60, 20, "MIDI Channel");
     spinner_chan->range(1, 16);
     spinner_chan->value(kb->GetChannel());
     spinner_chan->callback(setmidi_cb);
-    spinner_program = new Fl_Spinner(390, 460, 60, 20, "Prg");
+    spinner_program = new Fl_Spinner(420, 300, 60, 20, "Prg");
     spinner_program->range(0, 127);
     spinner_program->value(kb->GetProgram());
     spinner_program->callback(setmidi_cb);
-    spinner_vol = new Fl_Spinner(500, 460, 60, 20, "Vol" );
+    spinner_vol = new Fl_Spinner(540, 300, 60, 20, "Vol" );
     spinner_vol->range(0, 127);
     spinner_vol->value(kb->GetVolume());
     spinner_vol->callback(setmidi_cb);
-    spinner_pan = new Fl_Spinner(390, 500, 60, 20, "Pan");
+    spinner_pan = new Fl_Spinner(420, 330, 60, 20, "Pan");
     spinner_pan->range(0, 127);
     spinner_pan->value(kb->GetPan());
     spinner_pan->callback(setmidi_cb);
-    spinner_vel = new Fl_Spinner(500, 500, 60, 20, "Vel");
+    spinner_vel = new Fl_Spinner(540, 330, 60, 20, "Vel");
     spinner_vel->range(0, 127);
     spinner_vel->value(kb->GetNoteVel());
     spinner_vel->callback(setmidi_cb);
     group_midi->end();
+
+
+    group_output = new Fl_Group (20, 500, 760, 90);
+    group_output->box(FL_ENGRAVED_FRAME);
+
+    out1 = new Fl_Output(100, 520, 60, 20, "First key :");
+    out2 = new Fl_Output(100, 550, 60, 20, "Last  key :");
+    out3 = new Fl_Output(280, 520, 60, 20, "Mouse  key :");
+    out4 = new Fl_Output(280, 550, 60, 20, "Mouse x :");
+    out5 = new Fl_Output(460, 520, 60, 20, "Mouse y :");
+    out6 = new Fl_Output(460, 550, 60, 20, "Pressed :");
+    out7 = new Fl_Output(560, 520, 160, 20);
+    out7->value("CALLBACK");
+    group_output->end();
+
 
     window->end ();
     window->show (argc, argv);
