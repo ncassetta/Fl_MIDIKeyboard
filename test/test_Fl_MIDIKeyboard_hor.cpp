@@ -155,6 +155,9 @@ void setoutput_to(void*) {
 
 
 int main (int argc, char ** argv) {
+
+    Fl::scheme("plastic");
+
     window = new Fl_Double_Window (800, 600);
     kb = new Fl_MIDIKeyboard (20, 20, 760, 160, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");

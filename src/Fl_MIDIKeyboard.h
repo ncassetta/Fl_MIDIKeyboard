@@ -5,9 +5,6 @@
 /// This file is the header for FL_MIDIKeyboard class.
 
 
-#define FL_MIDI_BUILTIN_DRIVER      // uncomment if you use builtin midi driver
-//#define FL_MIDI_NO_DRIVER         // uncomment if no midi output
-//#define FL_MIDI_CUSTOM_DRIVER     // uncomment if you use your own midi driver (you must write your own functions)
 
 #include <sys/types.h>
 #include <cstring>		// memcpy
@@ -20,15 +17,8 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_draw.H>
 
+#include "MIDIDriver.h"
 
-#ifdef FL_MIDI_BUILTIN_DRIVER
-    #include "MIDIDriverWin32.h"
-#else
-#ifdef FL_MIDI_CUSTOM_DRIVER
-    // place here your #include statement
-    // you should implement a MIDI Driver class
-#endif
-#endif
 
 #define MIDDLE_C 60                         ///< MIDI note number of middle C.
 
@@ -43,15 +33,8 @@
 /// the key: these are the usual FLTK w and h in an MKB_HORIZONTAL keyboard, but are reversed in an MKB_VERTICAL
 /// one. The user can set the number of white keys in the keyboard, and choose several resizing and scrolling modes.
 /// Moreover, can send messages to a MIDI device and play the keyboard.
-class Fl_MIDIKeyboard : public Fl_Scroll
-#ifdef FL_MIDI_BUILTIN_DRIVER
-    , public MKB_MIDIDriver
-#else
-#ifdef FL_MIDI_CUSTOM_DRIVER
-    //  Fl_MIDIKeyboard should inherit from your driver class
-#endif
-#endif
-                                {
+class Fl_MIDIKeyboard : public Fl_Scroll, public MKB_MIDIDriver
+{
     public:
 
         /// The placement of the keyboard
@@ -143,6 +126,8 @@ class Fl_MIDIKeyboard : public Fl_Scroll
         int         keyscoord[128];         // coords of the keys (used internally)
 
         Fl_Box*     keyboard;				// keyboard box
+
+
 
     protected:
 

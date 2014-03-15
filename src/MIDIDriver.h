@@ -1,14 +1,16 @@
-
-#ifndef MIDIDRIVERWIN32_H
-#define MIDIDRIVERWIN32_H
+#ifndef MIDIDRIVER_H
+#define MIDIDRIVER_H
 
 
 /// \file
-/// This file contains the WIN32 implementation of MKB_MIDIDriver class.
+/// This file contains the implementation of MKB_MIDIDriver class.
 
-#ifdef WIN32
-#include "windows.h"
-#include "mmsystem.h"
+#include <string>
+#include <vector>
+
+
+#include "RtMidi-2.0.1/RtMidi.h"
+
 
 /// The class MKB_MIDIDriver is an object which sends MIDI messages to the computer MIDI ports.
 /// It can detect the MIDI ports present on the computer and send them some MIDI channel messages.
@@ -24,71 +26,68 @@ class MKB_MIDIDriver {
         virtual             ~MKB_MIDIDriver();
 
         /// Returns the number of MIDI ports present in the computer.
-        int                 GetNumMIDIOutDevs()     { return num_out_devs; }
+        int                 GetNumMIDIOutDevs()     { return midi_out->getPortCount(); }
 
         /// Returns the OS name of the port id.
-        const char*         GetMIDIOutDevName(UINT id)
-                                                    { return dev_names[id]; }
+        const char*         GetMIDIOutDevName(unsigned int id)
+                                                    { return midi_out->getPortName(id).c_str(); }
 
         /// Opens the currently set MIDI port, assigning current program, volume and pan.
-        bool                OpenMIDIOutPort ();
+        void                OpenMIDIOutPort ();
 
         /// Closes the currently opened MIDI port.
         void                CloseMIDIOutPort();
 
-        /// Resets the current MIDI port.
-        virtual void        Reset();
-
         /// Sends a MIDI message to the currently opened port.
         /// \param status the MIDI status byte (MIDI channel and message type info)
         /// \param byte1, byte2 other MIDI bytes in the message, according to the message type
-        bool                SendMIDIMessage(UCHAR status, UCHAR byte1, UCHAR byte2);
+        void                SendMIDIMessage(unsigned char status, unsigned char byte1, unsigned char byte2);
 
         /// Turns off all the notes.
         void                AllNotesOff();
 
         /// Sets the active MIDI port.
-        void                SetActivePort(UINT id);
+        void                SetActivePort(unsigned int id);
 
         ///Returns the active MIDI port.
         int                 GetActivePort()         { return port; }
 
         /// Sets the MIDI channel (range is 1 ...16).
-        void                SetChannel(UCHAR ch)    { channel = (ch - 1) & 0x0f; }
+        void                SetChannel(unsigned char ch)    { channel = (ch - 1) & 0x0f; }
 
         /// Returns the currently set MIDI channel.
-        UCHAR               GetChannel()            { return channel + 1; }
+        unsigned char       GetChannel()            { return channel + 1; }
 
         /// Sets the MIDI program and sends it to the selected port (if open).
-        void                SetProgram(UCHAR p);
+        void                SetProgram(unsigned char p);
 
         /// Returns the currently set MIDI program.
-        UCHAR               GetProgram()            { return program; }
+        unsigned char       GetProgram()            { return program; }
 
         /// Sets the MIDI volume and sends it to the selected port (if open).
-        void                SetVolume(UCHAR v);
+        void                SetVolume(unsigned char v);
 
         /// Returns the currently set MIDI volume.
-        UCHAR               GetVolume()             { return volume; }
+        unsigned char       GetVolume()             { return volume; }
 
         /// Sets the MIDI pan and sends it to the selected port (if open).
-        void                SetPan(UCHAR p);
+        void                SetPan(unsigned char p);
 
         /// Returns the currently set MIDI pan.
-        UCHAR               GetPan()                { return pan; }
+        unsigned char       GetPan()                { return pan; }
 
         /// Sets the default MIDI velocity for all subsequently sent notes.
-        void                SetNoteVel(UCHAR v)     { note_vel = v; }
+        void                SetNoteVel(unsigned char v)     { note_vel = v; }
 
         /// Returns the currently set MIDI velocity.
-        UCHAR               GetNoteVel()            { return note_vel; }
+        unsigned char       GetNoteVel()            { return note_vel; }
 
         /// Sends to the selected port a MIDI Note on message.
         /// \param note the MIDI note number (the velocity is the default velocity)
-        bool                NoteOn(UCHAR note);
+        void                NoteOn(unsigned char note);
 
         /// Sends to the selected port a MIDI Note off message.
-        bool                NoteOff(UCHAR note);
+        void                NoteOff(unsigned char note);
 
 
 /// MIDI Messages status bytes (only channel messages will be output by the driver).
@@ -181,21 +180,23 @@ class MKB_MIDIDriver {
 
     protected:
 
-        HMIDIOUT            out_handle;         ///< Windows handle to the current MIDI port
         bool                out_open;           ///< True if the port is open
-        UINT                num_out_devs;       ///< Number of MIDI Out devs installed
-        char**              dev_names;          ///< Names of the MIDI Out devs
 
-        UINT                port;               ///< Number of the selected port
-        UCHAR               channel;            ///< Number of the default channel (1 - 16)
-        UCHAR               program;            ///< Number of the default MIDI program (0 - 127)
-        UCHAR               volume;             ///< Amount of the MIDI volume (0 - 127)
-        UCHAR               pan;                ///< Amount of the MIDI pan (0 - 127)
-        UCHAR               note_vel;           ///< Default velocity for Note On messages
+        unsigned int        port;               ///< Number of the selected port
+        unsigned char       channel;            ///< Number of the default channel (1 - 16)
+        unsigned char       program;            ///< Number of the default MIDI program (0 - 127)
+        unsigned char       volume;             ///< Amount of the MIDI volume (0 - 127)
+        unsigned char       pan;                ///< Amount of the MIDI pan (0 - 127)
+        unsigned char       note_vel;           ///< Default velocity for Note On messages
+
+        RtMidiOut*          midi_out;           ///< The object which sends messages to hardware
+
+    private:
+
+        std::vector<unsigned char>
+                            message;
 };
 
 
-
-#endif
 
 #endif

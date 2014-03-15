@@ -88,7 +88,7 @@ Fl_MIDIKeyboard::Fl_MIDIKeyboard (int X, int Y, int W, int H, const char *l) :
     _b_width = (int)(_key_width * _bw_width_ratio);
     hscrollbar.callback(hscrollbar_cb);                 // set scrollbar callbacks to overriden functions
     scrollbar.callback(scrollbar_cb);
-    set_range(MKB_2OCTAVE);                             // default : two octaves width
+    set_range(MKB_2OCTAVE);                             // default : two octaves range
     scroll_mode(MKB_SCROLL_KEYS);                       // default : scrolling only with PGUP/PGDOWN
     press_mode(MKB_PRESS_NONE);                         // default : playing not active
 
@@ -304,13 +304,9 @@ void Fl_MIDIKeyboard::clear_pressed_status() {
 
 void Fl_MIDIKeyboard::press_key(uchar k) {
     if (!pressed_keys[k]) {
-#ifdef FL_MIDI_BUILTIN_DRIVER
+
         NoteOn(k);                          // play the key with the MIDI driver
-#else
-#ifdef FL_MIDI_CUSTOM_DRIVER
-        // place here your statements for the output of a MIDI note_on message
-#endif
-#endif
+
         pressed_keys[k] = true;             // adjust the pressed status variables
         _npressed++;
         if (_npressed == 1) _maxpressed = _minpressed = k;
@@ -328,13 +324,9 @@ void Fl_MIDIKeyboard::press_key(uchar k) {
 
 void Fl_MIDIKeyboard::release_key(uchar k) {
     if (pressed_keys[k]) {
-#ifdef FL_MIDI_BUILTIN_DRIVER
+
         NoteOff(k);
-#else
-#ifdef FL_MIDI_CUSTOM_DRIVER
-        // place here your statements for the output of a MIDI note_on message
-#endif
-#endif
+
         pressed_keys[k] = false;
         _npressed--;
         if (_npressed) {
@@ -349,11 +341,11 @@ void Fl_MIDIKeyboard::release_key(uchar k) {
                 _minpressed = k;
             }
         }
-    redraw();
-    if (when() & MKB_WHEN_RELEASE) {
-        _callback_status = MKB_RELEASE | k;
-        do_callback();
-    }
+        redraw();
+        if (when() & MKB_WHEN_RELEASE) {
+            _callback_status = MKB_RELEASE | k;
+            do_callback();
+        }
     //cout << "Released " << (char)k << " npressed = " << (int)_npressed << endl;
     }
 }
