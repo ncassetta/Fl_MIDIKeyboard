@@ -1,3 +1,8 @@
+/// \file
+/// This file contains the implementation of a sample program. In it a Fl_MIDIKeyboard is created with
+/// horizontal placement and the user can explore its features.
+
+
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <Fl/Fl_Output.H>
@@ -9,6 +14,8 @@
 #include "../src/Fl_MIDIKeyboard.h"
 
 #include <cstdio>
+
+
 
 Fl_Double_Window *window;
 Fl_MIDIKeyboard *kb;
@@ -138,15 +145,16 @@ void setoutput_to(void*) {
     out1->value(Fl_MIDIKeyboard::number_to_note(kb->bottom_key()));
     out2->value(Fl_MIDIKeyboard::number_to_note(kb->top_key()));
     out3->value(kb->below_mouse() == -1 ? "NONE" : Fl_MIDIKeyboard::number_to_note(kb->below_mouse()));
-    sprintf(s, "%d", Fl::event_x());
-    out4->value(s);
-    sprintf(s, "%d", Fl::event_y());
-    out5->value(s);
-    if (!kb->npressed()) out6->value("NONE");
+    if (!kb->npressed()) out4->value("NONE");
     else if (kb->npressed() == 1)
-        out6->value(Fl_MIDIKeyboard::number_to_note(kb->minpressed()));
+        out4->value(Fl_MIDIKeyboard::number_to_note(kb->minpressed()));
     else
-        out6->value("CHORD");
+        out4->value("CHORD");
+    sprintf(s, "%d", Fl::event_x());
+    out5->value(s);
+    sprintf(s, "%d", Fl::event_y());
+    out6->value(s);
+
 }
 
 
@@ -173,25 +181,37 @@ int main (int argc, char ** argv) {
     spinner_range1->callback(setrange_cb);
     spinner_range1->range(0, 120);
     spinner_range1->value(kb->first_key());
-    spinner_range2 = new Fl_Spinner(30 , 270 ,60, 20, "Extension");
+    spinner_range2 = new Fl_Spinner(110 , 240 ,60, 20, "Extension");
     spinner_range2->align(FL_ALIGN_RIGHT);
     spinner_range2->callback(setrange_cb);
     spinner_range2->range(7, 127);
     spinner_range2->value(kb->last_key());
 
-    check_autoresize = new Fl_Check_Button(30, 300, 25, 25, "Autoresize");
+    check_autoresize = new Fl_Check_Button(30, 270, 25, 25, "Autoresize");
     check_autoresize->align(FL_ALIGN_RIGHT);
     check_autoresize->callback(autoresize_cb);
     check_autoresize->value(1);
     check_autoresize->do_callback();
 
-    spinner_bwh = new Fl_Spinner(30, 330, 60, 20, "B/W height ratio");
+    spinner_bwh = new Fl_Spinner(30, 300, 60, 20, "B/W height ratio");
     spinner_bwh->align(FL_ALIGN_RIGHT);
     spinner_bwh->callback(setbwhratio_cb);
     spinner_bwh->type(FL_FLOAT_INPUT);
     spinner_bwh->range(0.2, 0.8);
     spinner_bwh->step(0.05);
     spinner_bwh->value(kb->bw_height_ratio());
+
+    spinner_bww = new Fl_Spinner(30, 330, 60, 20, "B/W width ratio");
+    spinner_bww->align(FL_ALIGN_RIGHT);
+    spinner_bww->callback(setbwwratio_cb);
+    spinner_bww->type(FL_FLOAT_INPUT);
+    spinner_bww ->range(0.4, 0.8);
+    spinner_bww->step(0.05);
+    spinner_bww->value(kb->bw_width_ratio());
+
+
+
+
 
     choice_scroll = new Fl_Choice(30, 360, 150, 20, "Scroll mode");
     choice_scroll->align(FL_ALIGN_RIGHT);
@@ -264,9 +284,9 @@ int main (int argc, char ** argv) {
     out1 = new Fl_Output(100, 520, 60, 20, "First key :");
     out2 = new Fl_Output(100, 550, 60, 20, "Last  key :");
     out3 = new Fl_Output(280, 520, 60, 20, "Mouse  key :");
-    out4 = new Fl_Output(280, 550, 60, 20, "Mouse x :");
-    out5 = new Fl_Output(460, 520, 60, 20, "Mouse y :");
-    out6 = new Fl_Output(460, 550, 60, 20, "Pressed :");
+    out4 = new Fl_Output(280, 550, 60, 20, "Pressed :");
+    out5 = new Fl_Output(460, 520, 60, 20, "Mouse x :");
+    out6 = new Fl_Output(460, 550, 60, 20, "Mouse y :");
     out7 = new Fl_Output(560, 520, 160, 20);
     out7->value("CALLBACK");
     group_output->end();

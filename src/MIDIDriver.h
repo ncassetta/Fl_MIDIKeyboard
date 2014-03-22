@@ -3,7 +3,7 @@
 
 
 /// \file
-/// This file contains the implementation of MKB_MIDIDriver class.
+/// This file is the header for the MKB_MIDIDriver class.
 
 #include <string>
 #include <vector>
@@ -12,14 +12,15 @@
 #include "RtMidi-2.0.1/RtMidi.h"
 
 
-/// The class MKB_MIDIDriver is an object which sends MIDI messages to the computer MIDI ports.
+/// The class MKB_MIDIDriver sends MIDI messages to the computer MIDI ports.
 /// It can detect the MIDI ports present on the computer and send them some MIDI channel messages.
 /// You can select the port, the channel, the volume, the pan and a default velocity for note messages.
 /// The class Fl_MIDIKeyboard inherits from it.
+/// The cross-platform support is obtained by mean of an RtMidiOut object.
 class MKB_MIDIDriver {
     public:
 
-        /// The constructor detects for MIDI port present in the computer.
+        /// The constructor.
                             MKB_MIDIDriver();
 
         /// The destructor.
@@ -28,7 +29,7 @@ class MKB_MIDIDriver {
         /// Returns the number of MIDI ports present in the computer.
         int                 GetNumMIDIOutDevs()     { return midi_out->getPortCount(); }
 
-        /// Returns the OS name of the port id.
+        /// Returns the OS name of the port *id*.
         const char*         GetMIDIOutDevName(unsigned int id)
                                                     { return midi_out->getPortName(id).c_str(); }
 
@@ -47,9 +48,11 @@ class MKB_MIDIDriver {
         void                AllNotesOff();
 
         /// Sets the active MIDI port.
+        /// \param id an integer in the range 0 ... GetNumMIDIOutDevs() - 1.
         void                SetActivePort(unsigned int id);
 
-        ///Returns the active MIDI port.
+        /// Returns the active MIDI port. You can call GetMIDIOutDevName() if you want to know the name of the
+        /// port.
         int                 GetActivePort()         { return port; }
 
         /// Sets the MIDI channel (range is 1 ...16).

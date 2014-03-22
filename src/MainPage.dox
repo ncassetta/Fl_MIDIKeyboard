@@ -1,8 +1,8 @@
 /**
 \mainpage
 The Fl_MIDIKeyboard is a widget developed with FLTK GUI Toolkit (see <http://www.fltk.org>) by __Nicola Cassetta__.
-It allows the user to incorporate into FLTK environment a piano keyboard capable to send MIDI messages to the instruments
-installed into the computer.
+It allows the user to incorporate into FLTK environment a piano keyboard capable to send MIDI messages to the computer
+MIDI ports.
 It includes these features:
 - Horizontal or vertical keyboard
 - Customizable range
@@ -10,12 +10,13 @@ It includes these features:
 - Resizing and autoresizing of keys
 - Scrolling with a scrollbar, with the arrow keys on the computer keyboard or with the mouse
 - Playing with a mouse click on the keys or with the computer keyboard (this mode allows playing chords)
-- Callbacks can be done when a key is pressed or released
+- Callbacks can be executed when a key is pressed or released
 - Can send these MIDI messages: Note On/Off, Program change, Volume, Pan
 
-\note Currently MIDI playback is implemented only for WINDOWS.
+The widget uses RtMidi library (see <http://www.music.mcgill.ca/~gary/rtmidi/> to communicate with the hardware of the computer
+regardless of operating system. It consists of only one source file and two headers, so it has been incorporated into the source.  
 
-See the file test_FlMIDIKeyboard.cpp for an example.
+The features are shown in the sample programs test_Fl_MIDIKeyboard_hor.cpp and test_Fl_MIDIKeyboard_vert.cpp.
 Thanks
 Nicola Cassetta
 **/
@@ -39,5 +40,6 @@ Keys are ordered as follows (this is optimized for English keyboard layout):
 - ',' = C (upper octave)
 - up arrow raise (and scroll) one octave
 - down arrow lower (and scroll) one octave
-\note The widget uses the FLTK events handling for playing, so it is not intended for realtime performance!
+\note The widget uses the FLTK events handling for playing, so it is not intended for realtime performance! There is an audible latency
+between keypress and sound.
 **/

@@ -113,7 +113,8 @@ void Fl_MIDIKeyboard::key_width(float w) {
 
 
 void  Fl_MIDIKeyboard::bw_height_ratio(float r) {
-    if (0.2 <= r && r <= 0.8) {
+    int percent = (int)((r + 0.005) * 100);             // rounds for avoiding floating point errors
+    if (20 <= percent && percent <= 80) {
         _bw_height_ratio = r;
         _b_height = (int)(_key_height * _bw_height_ratio);  // set black keys height
         redraw();
@@ -122,7 +123,8 @@ void  Fl_MIDIKeyboard::bw_height_ratio(float r) {
 
 
 void Fl_MIDIKeyboard::bw_width_ratio(float r) {
-    if (0.4 <= r && r <= 0.8) {
+    int percent = (int)((r + 0.005) * 100);             // rounds for avoiding floating point errors
+    if (40 <= percent && percent <= 80) {
         _bw_width_ratio = r;
         _b_width = (int)(_key_width * _bw_width_ratio);     // set black keys width
         set_keyboard_width();
@@ -290,14 +292,16 @@ void Fl_MIDIKeyboard::get_pressed_status(const bool* keys_array, uchar& n, uchar
 
 
 void Fl_MIDIKeyboard::clear_pressed_status() {
-    memset(pressed_keys, 0, sizeof(bool[128]));
-    _npressed = 0;
-    _minpressed = 0;
-    _maxpressed = 0;
-    redraw();
-    if(when() & MKB_WHEN_RELEASE) {
-        _callback_status = MKB_CLEAR;
-        do_callback();
+    if (_npressed) {
+        memset(pressed_keys, 0, sizeof(bool[128]));
+        _npressed = 0;
+        _minpressed = 0;
+        _maxpressed = 0;
+        redraw();
+        if(when() & MKB_WHEN_RELEASE) {
+            _callback_status = MKB_CLEAR;
+            do_callback();
+        }
     }
 }
 
@@ -402,8 +406,8 @@ void Fl_MIDIKeyboard::set_keyboard_width(void) {
     }
     _b_width = (int)(_key_width * _bw_width_ratio);     // adjust black keys width
     _type == MKB_HORIZONTAL ?                           // resizes the keyboard
-        keyboard->size(_total_width, _key_height + 1) :
-        keyboard->size(_key_height + 1, _total_width);
+        keyboard->size(_total_width, _key_height ) :
+        keyboard->size(_key_height, _total_width);
 
     float offs = 0.0;
     for (uchar i = _firstkey; i <= _lastkey; i++) {
@@ -420,11 +424,11 @@ void Fl_MIDIKeyboard::set_keyboard_width(void) {
 
 void Fl_MIDIKeyboard::set_key_height() {
     if (_type == MKB_HORIZONTAL) {
-        keyboard->size(keyboard->w(), kbdh() - 1);
+        keyboard->size(keyboard->w(), kbdh());
         _key_height = keyboard->h();
     }
     else {
-        keyboard->size(kbdh() - 1, keyboard->h());
+        keyboard->size(kbdh(), keyboard->h());
         _key_height = keyboard->w();
     }
      _b_height = (int)(_key_height * _bw_height_ratio);

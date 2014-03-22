@@ -1,3 +1,9 @@
+/// \file
+/// This file contains the implementation of a sample program. In it a Fl_MIDIKeyboard is created with
+/// vertical placement and the user can explore its features.
+
+
+
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <Fl/Fl_Output.H>
@@ -155,6 +161,9 @@ void setoutput_to(void*) {
 
 
 int main (int argc, char ** argv) {
+
+    Fl::scheme("gtk+");
+
     window = new Fl_Double_Window (800, 600);
     kb = new Fl_MIDIKeyboard (20, 20, 200, 380, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");
@@ -190,7 +199,15 @@ int main (int argc, char ** argv) {
     spinner_bwh->step(0.05);
     spinner_bwh->value(kb->bw_height_ratio());
 
-    choice_scroll = new Fl_Choice(300, 150, 150, 20, "Scroll mode");
+    spinner_bww = new Fl_Spinner(300, 120, 60, 20, "B/W width ratio");
+    spinner_bww->align(FL_ALIGN_RIGHT);
+    spinner_bww->callback(setbwwratio_cb);
+    spinner_bww->type(FL_FLOAT_INPUT);
+    spinner_bww->range(0.4, 0.8);
+    spinner_bww->step(0.05);
+    spinner_bww->value(kb->bw_width_ratio());
+
+    choice_scroll = new Fl_Choice(300, 180, 150, 20, "Scroll mode");
     choice_scroll->align(FL_ALIGN_RIGHT);
     choice_scroll->callback(setscrolling_cb);
     choice_scroll->add ("No scrolling");
@@ -200,7 +217,7 @@ int main (int argc, char ** argv) {
     choice_scroll->value(0);        // default value for scroll mode
     choice_scroll->do_callback();
 
-    choice_keypress = new Fl_Choice(300, 180, 150, 20, "Playing mode");
+    choice_keypress = new Fl_Choice(300, 210, 150, 20, "Playing mode");
     choice_keypress->align(FL_ALIGN_RIGHT);
     choice_keypress->callback(setkeypress_cb);
     choice_keypress->add ("No playing");
@@ -209,7 +226,7 @@ int main (int argc, char ** argv) {
     choice_keypress->add ("Both mouse and computer keys");
     choice_keypress->value(0);      // default value for keypress mode
 
-    choice_callback = new Fl_Choice(300, 210, 150, 20, "Callback mode");
+    choice_callback = new Fl_Choice(300, 240, 150, 20, "Callback mode");
     choice_callback->align(FL_ALIGN_RIGHT);
     choice_callback->callback(setcallback_cb);
     choice_callback->add ("No callback");
@@ -239,29 +256,34 @@ int main (int argc, char ** argv) {
     group_midi->box(FL_ENGRAVED_FRAME);
 
     choice_port = new Fl_Choice(300, 380, 240, 20, "MIDI Port");
-    choice_port->align(FL_ALIGN_TOP);
+    choice_port->align(FL_ALIGN_TOP | FL_ALIGN_LEFT);
     for (int i = 0; i < kb->GetNumMIDIOutDevs(); i++)
         choice_port->add(kb->GetMIDIOutDevName(i));
     choice_port->value(0);
     choice_port->callback(setmidi_cb);
     choice_port->do_callback();
-    spinner_chan = new Fl_Spinner(390, 420, 60, 20, "MIDI Channel");
+    spinner_chan = new Fl_Spinner(300, 420, 60, 20, "MIDI Channel");
+    spinner_chan->align(FL_ALIGN_RIGHT);
     spinner_chan->range(1, 16);
     spinner_chan->value(kb->GetChannel());
     spinner_chan->callback(setmidi_cb);
-    spinner_program = new Fl_Spinner(390, 460, 60, 20, "Prg");
+    spinner_program = new Fl_Spinner(300, 460, 60, 20, "Prg");
+    spinner_program->align(FL_ALIGN_RIGHT);
     spinner_program->range(0, 127);
     spinner_program->value(kb->GetProgram());
     spinner_program->callback(setmidi_cb);
-    spinner_vol = new Fl_Spinner(500, 460, 60, 20, "Vol" );
+    spinner_vol = new Fl_Spinner(410, 460, 60, 20, "Vol" );
+    spinner_vol->align(FL_ALIGN_RIGHT);
     spinner_vol->range(0, 127);
     spinner_vol->value(kb->GetVolume());
     spinner_vol->callback(setmidi_cb);
-    spinner_pan = new Fl_Spinner(390, 500, 60, 20, "Pan");
+    spinner_pan = new Fl_Spinner(300, 500, 60, 20, "Pan");
+    spinner_pan->align(FL_ALIGN_RIGHT);
     spinner_pan->range(0, 127);
     spinner_pan->value(kb->GetPan());
     spinner_pan->callback(setmidi_cb);
-    spinner_vel = new Fl_Spinner(500, 500, 60, 20, "Vel");
+    spinner_vel = new Fl_Spinner(410, 500, 60, 20, "Vel");
+    spinner_vel->align(FL_ALIGN_RIGHT);
     spinner_vel->range(0, 127);
     spinner_vel->value(kb->GetNoteVel());
     spinner_vel->callback(setmidi_cb);

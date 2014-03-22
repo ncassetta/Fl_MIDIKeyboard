@@ -2,7 +2,7 @@
 #define MIDIKEYBOARD_H_INCLUDED
 
 /// \file
-/// This file is the header for FL_MIDIKeyboard class.
+/// This file is the header for the Fl_MIDIKeyboard class.
 
 
 
