@@ -212,6 +212,7 @@ void Fl_MIDIKeyboard::scroll_mode(char c) {
         }
     }
     set_key_height();                           // if a scrollbars was hidden, change the key height
+    redraw();
 }
 
 
@@ -231,7 +232,7 @@ void Fl_MIDIKeyboard::kbd_position(short pos){
     else {
         position(xposition(),  pos);
     }
-    visible_keys();
+    visible_keys();                                         // calls redraw()
 }
 
 
@@ -417,8 +418,7 @@ void Fl_MIDIKeyboard::set_keyboard_width(void) {
     }
     if (!_maxbottom_found)
         _maxbottom = find_key_from_offset(_total_width - kbdw(), false);
-    center_keyboard();
-    //key_position(_firstkey);        // calls visible_keys()
+    center_keyboard();                                  // calls redraw()
 }
 
 
