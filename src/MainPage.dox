@@ -1,8 +1,11 @@
 /**
 \mainpage
 The Fl_MIDIKeyboard is a widget developed with FLTK GUI Toolkit (see <http://www.fltk.org>) by __Nicola Cassetta__.
+(_ncassettaATtiscaliDOTit_).
+
 It allows the user to incorporate into FLTK environment a piano keyboard capable to send MIDI messages to the computer
 MIDI ports.
+
 It includes these features:
 - Horizontal or vertical keyboard
 - Customizable range
@@ -14,11 +17,13 @@ It includes these features:
 - Can send these MIDI messages: Note On/Off, Program change, Volume, Pan
 
 The widget uses RtMidi library (see <http://www.music.mcgill.ca/~gary/rtmidi/> to communicate with the hardware of the computer
-regardless of operating system. It consists of only one source file and two headers, so it has been incorporated into the source.  
+regardless of operating system. It consists of only one source file and two headers, so it has been incorporated into the source.
 
 The features are shown in the sample programs test_Fl_MIDIKeyboard_hor.cpp and test_Fl_MIDIKeyboard_vert.cpp.
-Thanks
-Nicola Cassetta
+
+See the \ref building page for building the widget.
+
+Thanks Nicola Cassetta
 **/
 
 /** \page playing PLAYING WITH COMPUTER KEYBOARD.
@@ -42,4 +47,32 @@ Keys are ordered as follows (this is optimized for English keyboard layout):
 - down arrow lower (and scroll) one octave
 \note The widget uses the FLTK events handling for playing, so it is not intended for realtime performance! There is an audible latency
 between keypress and sound.
+**/
+
+/** \page building BUILDING THE WIDGET
+How to build the widget.
+I apologize I am not a professional coder, so only know how to work with Windows and Codeblocks (and only
+tested the code with Windows). I really appreciate if someone could help me to test it under other OS and to develop
+a correct BUILD section for the widget.
+
+However, for building you have to compile the three files __src\\Fl_MIDIKeyboard.cpp__, __src\\MIDIDriver.cpp__ and
+__src\\rtmidi-2.0.1\\RtMidi.cpp__ (this one contains the RtMidi library, you could also compile it separately)
+and link with usual FLTK libraries.
+Moreover, for building RtMidi, you must link with following libraries:
+
+| OS                   | lib (or framework)   |
+|----------------------|----------------------|
+| LINUX with ALSA      | asound, pthread      |
+| LINUX without ALSA   | jack                 |
+| MAC OSX              | CoreMidi, CoreAudio, CoreFoundation |
+| Windows (with MM)    | winmm (with multithreading) |
+
+
+I slightly modified the file __src\\rtmidi-2.0.1\\RtMidi.h__ trying to auto recognize the OS by mean of compiler macros.
+(this is done in __src\\Config.h__). If this doesnt work you can eliminate my edit in it and try to compile RtMidi
+according to the instructions in their site <http://www.music.mcgill.ca/~gary/rtmidi/>.
+
+Thanks
+
+Nicola Cassetta
 **/
