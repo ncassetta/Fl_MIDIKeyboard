@@ -42,8 +42,8 @@
 <div class="title">BUILDING THE WIDGET </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>How to build the widget.</p>
-<p>I apologize I am not a professional coder, so only know how to work with Windows and Codeblocks (and only tested the code with Windows). I really appreciate if someone could help me to test it under other OS and to develop a correct BUILD section for the widget.</p>
+<div class="textblock"><p>I apologize I am not a professional coder, so only know how to work with Windows and Codeblocks (and only tested the code with Windows).</p>
+<p>I really appreciate if someone could help me to test it under other OS and to develop a correct BUILD section for the widget.</p>
 <p>However, for building you have to compile the three files <b>src\Fl_MIDIKeyboard.cpp</b>, <b>src\MIDIDriver.cpp</b> and <b>src\rtmidi-2.0.1\RtMidi.cpp</b> (this one contains the RtMidi library, you could also compile it separately) and link with usual FLTK libraries. Moreover, for building RtMidi, you must link with following libraries:</p>
 <table class="doxtable">
 <tr>
@@ -58,12 +58,13 @@
 <td>Windows (with MM) </td><td>winmm (with multithreading) </td></tr>
 </table>
 <p>I slightly modified the file <b>src\rtmidi-2.0.1\RtMidi.h</b> trying to auto recognize the OS by mean of compiler macros. (this is done in <b>src\<a class="el" href="_config_8h.html" title="This file defines some macros to compile the RtMidi class according to the operating system...">Config.h</a></b>). If this doesnt work you can eliminate my edit in it and try to compile RtMidi according to the instructions in their site <a href="http://www.music.mcgill.ca/~gary/rtmidi/">http://www.music.mcgill.ca/~gary/rtmidi/</a>.</p>
+<p>Obviously you can compile the widget as a separate lib or incorporate it into FLTK. In the <b>test</b> folder there are two sample programs showing its features</p>
 <p>Thanks</p>
 <p>Nicola Cassetta </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 29 2014 12:40:00 for Fl_MIDIKeyboard by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 6 2014 17:00:32 for Fl_MIDIKeyboard by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

@@ -1,6 +1,6 @@
 /// \file
 /// This file contains the implementation of a sample program. In it a Fl_MIDIKeyboard is created with
-/// horizontal placement and the user can explore its features.
+/// horizontal placement and the user can explore its features. See source code for comments.
 
 
 #include <FL/Fl.H>
@@ -15,11 +15,9 @@
 
 #include <cstdio>
 
-
-
-Fl_Double_Window *window;
-Fl_MIDIKeyboard *kb;
-Fl_Group *group_settings, *group_midi, *group_output;
+Fl_Double_Window *window;                               // our main window
+Fl_MIDIKeyboard *kb;                                    // our Fl_MIDIKeyboart
+Fl_Group *group_settings, *group_midi, *group_output;   // other widgets
 Fl_Spinner *spinner_range1, *spinner_range2, *spinner_bwh, *spinner_bww,
     *spinner_chan, *spinner_program, *spinner_vol, *spinner_pan, *spinner_vel;
 Fl_Check_Button* check_autoresize;
@@ -27,6 +25,8 @@ Fl_Choice *choice_scroll, *choice_keypress, *choice_callback, *choice_port;
 Fl_Output *out1, *out2, *out3, *out4, *out5, *out6, *out7;
 
 
+// sets the keyboard range (extension): values are given by Fl_Spinner spinner_range1 (lower key)
+// and spinner_range2 (upper)
 void setrange_cb(Fl_Widget* w, void* p) {
     int low = (int)spinner_range1->value();
     int high = (int)spinner_range2->value();
@@ -38,53 +38,57 @@ void setrange_cb(Fl_Widget* w, void* p) {
     spinner_range2->value(kb->last_key());
 }
 
+// sets the ratio between black and white keys heights: value is given by the Fl_Spinner spinner_bwh
 void setbwhratio_cb(Fl_Widget* w, void* p) {
     kb->bw_height_ratio(spinner_bwh->value());
     kb->redraw();
 }
 
+// sets the ratio between black and white keys widths: value is given by the Fl_Spinner spinner_bww
 void setbwwratio_cb(Fl_Widget* w, void* p) {
     kb->bw_width_ratio(spinner_bww->value());
     kb->redraw();
 }
 
-
+// sets the scrolling mode: value is given by the Fl_Choice choice_scroll
 void setscrolling_cb(Fl_Widget* w, void* p) {
     switch (choice_scroll->value()) {
         case 0:
             kb->scroll_mode(Fl_MIDIKeyboard::MKB_SCROLL_NONE);
-            break;
+            break;      // no scrolling
         case 1:
             kb->scroll_mode(Fl_MIDIKeyboard::MKB_SCROLL_MOUSE);
-            break;
+            break;      // scrolling with the mouse
         case 2:
             kb->scroll_mode(Fl_MIDIKeyboard::MKB_SCROLL_KEYS);
             kb->take_focus();
-            break;
+            break;      // scrolling with the computer keyboard
         case 3:
             kb->scroll_mode(Fl_MIDIKeyboard::MKB_SCROLL_SCRBAR);
-            break;
+            break;      // scrolling with the scrollbar
     }
 }
 
+// sets the keypress (playing) mode:  value is given by the Fl_Choice choice_keypress
 void setkeypress_cb(Fl_Widget* w, void* p) {
     switch (choice_keypress->value()) {
         case 0:
             kb->press_mode(Fl_MIDIKeyboard::MKB_PRESS_NONE);
-            break;
+            break;      // no MIDI playing
         case 1:
             kb->press_mode(Fl_MIDIKeyboard::MKB_PRESS_MOUSE);
-            break;
+            break;      // plays with the mouse click
         case 2:
             kb->press_mode(Fl_MIDIKeyboard::MKB_PRESS_KEYS);
             kb->take_focus();
-            break;
+            break;      // plays with the computer keyboard
         case 3:
             kb->press_mode(Fl_MIDIKeyboard::MKB_PRESS_BOTH);
-            break;
+            break;      // plays with both
     }
 }
 
+// sets the callback mode:  value is given by the Fl_Choice choice_callback
 void setcallback_cb(Fl_Widget* w, void* p) {
     switch (choice_callback->value()) {
         case 0:
@@ -105,6 +109,7 @@ void setcallback_cb(Fl_Widget* w, void* p) {
     }
 }
 
+// sets all the midi parameters of the MKB_MIDIDriver
 void setmidi_cb(Fl_Widget* w, void* p) {
     if (w == choice_port)
         kb->SetActivePort(((Fl_Choice *)w)->value());
@@ -120,14 +125,17 @@ void setmidi_cb(Fl_Widget* w, void* p) {
         kb->SetNoteVel(((Fl_Spinner *)w)->value());
 }
 
+// turns on and off the autoresize mode (try it with a small number of keys): value is given by
+// the Fl_Check_Button check_autoresize
 void autoresize_cb(Fl_Widget* w, void* p) {
     Fl_Check_Button* cb = (Fl_Check_Button*) w;
     kb->resize_mode(cb->value());
 }
 
+// this is the sample callback: it randomly changes the colours of Fl_Box out7
 void kb_callback_cb(Fl_Widget* w, void* p) {
     Fl_MIDIKeyboard* kb = (Fl_MIDIKeyboard *)w;
-    int status = kb->callback_status();
+    int status = kb->callback_status();     // call this when you want to know why the callback has been executed
     if ( (kb->when() | Fl_MIDIKeyboard::MKB_WHEN_FOCUS &&
                 (status == Fl_MIDIKeyboard::MKB_FOCUS || status == Fl_MIDIKeyboard::MKB_UNFOCUS) ) ||
           ((kb->when() | Fl_MIDIKeyboard::MKB_WHEN_PRESS) && status == Fl_MIDIKeyboard::MKB_PRESS) ||
@@ -139,22 +147,27 @@ void kb_callback_cb(Fl_Widget* w, void* p) {
     }
 }
 
+// refreshes the GUI (called by Fl::add_idle() )
 void setoutput_to(void*) {
     char s[15];
 
     out1->value(Fl_MIDIKeyboard::number_to_note(kb->bottom_key()));
+        // lower visible key
     out2->value(Fl_MIDIKeyboard::number_to_note(kb->top_key()));
+        // upper visible key
     out3->value(kb->below_mouse() == -1 ? "NONE" : Fl_MIDIKeyboard::number_to_note(kb->below_mouse()));
+        // key below mouse
     if (!kb->npressed()) out4->value("NONE");
     else if (kb->npressed() == 1)
         out4->value(Fl_MIDIKeyboard::number_to_note(kb->minpressed()));
     else
         out4->value("CHORD");
+        // playing key, if one, or "CHORD" if more than one
     sprintf(s, "%d", Fl::event_x());
     out5->value(s);
     sprintf(s, "%d", Fl::event_y());
     out6->value(s);
-
+        // mouse coords
 }
 
 

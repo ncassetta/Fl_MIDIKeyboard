@@ -50,7 +50,6 @@ between keypress and sound.
 **/
 
 /** \page building BUILDING THE WIDGET
-How to build the widget.
 I apologize I am not a professional coder, so only know how to work with Windows and Codeblocks (and only
 tested the code with Windows). I really appreciate if someone could help me to test it under other OS and to develop
 a correct BUILD section for the widget.
@@ -71,6 +70,9 @@ Moreover, for building RtMidi, you must link with following libraries:
 I slightly modified the file __src\\rtmidi-2.0.1\\RtMidi.h__ trying to auto recognize the OS by mean of compiler macros.
 (this is done in __src\\Config.h__). If this doesnt work you can eliminate my edit in it and try to compile RtMidi
 according to the instructions in their site <http://www.music.mcgill.ca/~gary/rtmidi/>.
+
+Obviously you can compile the widget as a separate lib or incorporate it into FLTK. In the __test__ folder there are two sample
+programs showing its features 
 
 Thanks
 

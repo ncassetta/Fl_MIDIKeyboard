@@ -22,6 +22,6 @@ regardless of operating system. It consists of only one source file and two head
 
 The features are shown in the sample programs test_Fl_MIDIKeyboard_hor.cpp and test_Fl_MIDIKeyboard_vert.cpp.
 
-See the __BUILDING THE WIDGET__ page in the dos for building the widget.
+See the __BUILDING THE WIDGET__ page in the docs for building the widget.
 
 Thanks Nicola Cassetta
