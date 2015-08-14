@@ -25,3 +25,5 @@ The features are shown in the sample programs test_Fl_MIDIKeyboard_hor.cpp and t
 See the __BUILDING THE WIDGET__ page in the docs for building the widget.
 
 Thanks Nicola Cassetta
+
+P.S. Any feedback would be appreciated.
