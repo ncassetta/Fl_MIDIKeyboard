@@ -228,9 +228,9 @@ void Fl_MIDIKeyboard::press_mode(char c)  {
 
 void Fl_MIDIKeyboard::kbd_position(short pos){
     if( _type == MKB_HORIZONTAL)
-        position(pos, yposition());
+        scroll_to(pos, yposition());
     else {
-        position(xposition(),  pos);
+        scroll_to(xposition(),  pos);
     }
     visible_keys();                                         // calls redraw()
 }
@@ -527,7 +527,7 @@ void Fl_MIDIKeyboard::visible_keys(void) {
 void Fl_MIDIKeyboard::hscrollbar_cb(Fl_Widget* w, void*) {      // called only if MKB_HORIZONTAL
     Fl_MIDIKeyboard* mk = (Fl_MIDIKeyboard*)(w->parent());
     Fl_Scrollbar* scbar = (Fl_Scrollbar*)w;
-    mk->position((int)(scbar->value()), mk->yposition());       // do the scrolling
+    mk->scroll_to((int)(scbar->value()), mk->yposition());       // do the scrolling
     mk->visible_keys();                                         // set the visible keys range
 }
 
@@ -535,7 +535,7 @@ void Fl_MIDIKeyboard::hscrollbar_cb(Fl_Widget* w, void*) {      // called only i
 void Fl_MIDIKeyboard::scrollbar_cb(Fl_Widget* w, void*) {       // called only if MKB_VERTICAL
     Fl_MIDIKeyboard* mk = (Fl_MIDIKeyboard*)(w->parent());
     Fl_Scrollbar* scbar = (Fl_Scrollbar*)w;
-    mk->position(mk->xposition(), (int)(scbar->value()));       // as above
+    mk->scroll_to(mk->xposition(), (int)(scbar->value()));       // as above
     mk->visible_keys();
 }
 
@@ -783,19 +783,19 @@ void Fl_MIDIKeyboard::autodrag_to(void *p) {
     if (mk->_type == MKB_HORIZONTAL) {
         if (Fl::event_inside(mk->x()-20, mk->y(), mk->x(), mk->y()+mk->h()) &&
             mk->xposition() >= 10) {
-            mk->position(mk->xposition() - 10, mk->yposition());
+            mk->scroll_to(mk->xposition() - 10, mk->yposition());
         }
         else if (Fl::event_inside(mk->x()+mk->w(), mk->y(), mk->x()+mk->w()+20, mk->y()+mk->h()) &&
                  mk->xposition() <= mk->keyboard->w() - mk->w() - 10) {
-            mk->position(mk->xposition() + 10, mk->yposition());
+            mk->scroll_to(mk->xposition() + 10, mk->yposition());
         }
     }
 
     else if (mk->_type == MKB_VERTICAL) {
         if (Fl::event_inside(mk->x(), mk->y()-20, mk->x()+mk->w(), mk->y()))
-            mk->position(mk->xposition(), mk->yposition() >= 10 ? mk->yposition() - 10 : 0);
+            mk->scroll_to(mk->xposition(), mk->yposition() >= 10 ? mk->yposition() - 10 : 0);
         else if (Fl::event_inside(mk->x(), mk->y()+mk->h(), mk->x()+mk->w(), mk->y()+mk->h()+20))
-            mk->position(mk->xposition(), mk->yposition() <= mk->keyboard->h() - mk->h() - 10 ?
+            mk->scroll_to(mk->xposition(), mk->yposition() <= mk->keyboard->h() - mk->h() - 10 ?
                                                 mk->yposition() + 10 : mk->keyboard->h() - mk->h() + Fl::box_dh(mk->box()));
     }
     if (mk->xposition() != oldx || mk->yposition() != oldy)

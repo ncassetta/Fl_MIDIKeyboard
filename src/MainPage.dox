@@ -23,6 +23,14 @@ The features are shown in the sample programs test_Fl_MIDIKeyboard_hor.cpp and t
 
 See the \ref building page for building the widget.
 
+Sample programs pictures:
+-------------------------
+
+<img src="horizontal.PNG" width="401" height="313" alt="Test horizontal image" title="Test_FL_MIDIKeyboard_hor.cpp" align="middle" />
+
+<img src="vertical.PNG" width="401" height="314" alt="test vertical image" title="Test_FL_MIDIKeyboard_vert.cpp" align="middle" />
+
+
 Thanks Nicola Cassetta
 **/
 
@@ -71,8 +79,7 @@ I slightly modified the file __src\\rtmidi-2.0.1\\RtMidi.h__ trying to auto reco
 (this is done in __src\\Config.h__). If this doesnt work you can eliminate my edit in it and try to compile RtMidi
 according to the instructions in their site <http://www.music.mcgill.ca/~gary/rtmidi/>.
 
-Obviously you can compile the widget as a separate lib or incorporate it into FLTK. In the __test__ folder there are two sample
-programs showing its features 
+Obviously you can compile the widget as a separate lib or incorporate it into FLTK. In the __test__ folder there are two sample programs showing its features 
 
 Thanks
 

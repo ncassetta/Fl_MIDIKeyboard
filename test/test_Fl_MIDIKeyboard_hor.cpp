@@ -179,10 +179,10 @@ int main (int argc, char ** argv) {
 
     Fl::scheme("plastic");
 
-    window = new Fl_Double_Window (800, 600);
+    window = new Fl_Double_Window (800, 600, "FL_MIDIKeyboard_hor");
     kb = new Fl_MIDIKeyboard (20, 20, 760, 160, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");
-    kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any background blue!
+    //kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any blue background!
     kb->callback(kb_callback_cb);
     kb->set_range(Fl_MIDIKeyboard::MKB_PIANO);
     kb->center_keyboard(MIDDLE_C);

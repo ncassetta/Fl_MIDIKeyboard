@@ -26,4 +26,13 @@ See the __BUILDING THE WIDGET__ page in the docs for building the widget.
 
 Thanks Nicola Cassetta
 
-P.S. Any feedback would be appreciated.
+P.S. Any feedback would be appreciated
+
+Sample programs pictures:
+-------------------------
+
+<img src="horizontal.PNG" width="401" height="313" alt="Test horizontal image" title="Test_FL_MIDIKeyboard_hor.cpp" align="middle" />
+
+<img src="vertical.PNG" width="401" height="314" alt="test vertical image" title="Test_FL_MIDIKeyboard_vert.cpp" align="middle" />
+
+

@@ -177,12 +177,12 @@ void setoutput_to(void*) {
 
 int main (int argc, char ** argv) {
 
-    Fl::scheme("gtk+");
+    Fl::scheme("plastic");
 
-    window = new Fl_Double_Window (800, 600);
-    kb = new Fl_MIDIKeyboard (20, 20, 200, 380, "MIDI Keyboard");
+    window = new Fl_Double_Window (800, 600, "FL_MIDIKeyboard_vert");
+    kb = new Fl_MIDIKeyboard (20, 20, 200, 560, "MIDI Keyboard");
     //kb = new Fl_MIDIKeyboard (20, 320, 380, 200, "MIDI Keyboard");
-    kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any background blue!
+    //kb->color(FL_DARK_BLUE);    // FOR DEBUG: you should NOT see any background blue!
     kb->callback(kb_callback_cb);
     kb->set_range(Fl_MIDIKeyboard::MKB_PIANO);
     kb->center_keyboard(MIDDLE_C);
