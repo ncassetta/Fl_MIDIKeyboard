@@ -17,6 +17,11 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_draw.H>
 
+#if FL_MAJOR_VERSION == 1 && FL_MINOR_VERSION < 3
+    #error Fl_MIDIKeyboard requires at least FLTK 1.3.x
+#endif // FL_MAJOR_VERSION
+// due to a difference in the Fl_Scroll class, this is now incompatible with FLTK 1.1.x
+
 #include "MIDIDriver.h"
 
 

@@ -32,7 +32,8 @@ Sample programs pictures:
 -------------------------
 
 <img src="horizontal.PNG" width="401" height="313" alt="Test horizontal image" title="Test_FL_MIDIKeyboard_hor.cpp" align="middle" />
+The horizontal keyboard
 
 <img src="vertical.PNG" width="401" height="314" alt="test vertical image" title="Test_FL_MIDIKeyboard_vert.cpp" align="middle" />
-
+Yhr vertical keyboard
 
